@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Name Practice</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", sans-serif;
+      background-color: #fdf6e3;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #4CAF50;
+      font-size: 36px;
+    }
+
+    #nameInput {
+      font-size: 30px;
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      margin: 20px auto;
+      border: 3px solid #4CAF50;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .keyboard {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    .key {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      font-size: 24px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background-color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .key.highlight {
+      background-color: #ffeb3b;
+      border-color: #fbc02d;
+    }
+
+    .key.correct {
+      background-color: #8bc34a;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Type Your Name</h1>
+  <input id="nameInput" type="text" placeholder="Type here..." autofocus />
+
+  <div class="keyboard" id="keyboard"></div>
+
+  <script>
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const keyboard = document.getElementById("keyboard");
+    const input = document.getElementById("nameInput");
+
+    // Create keyboard
+    letters.split('').forEach(letter => {
+      const key = document.createElement("button");
+      key.className = "key";
+      key.textContent = letter;
+      key.onclick = () => {
+        input.value += letter;
+        updateHighlights();
+      };
+      keyboard.appendChild(key);
+    });
+
+    // Highlight matching letters
+    function updateHighlights() {
+      const typedName = input.value.toUpperCase();
+      const keys = document.querySelectorAll(".key");
+
+      keys.forEach(key => {
+        key.classList.remove("highlight", "correct");
+        const letter = key.textContent;
+        if (typedName.includes(letter)) {
+          const countInName = (typedName.match(new RegExp(letter, "g")) || []).length;
+          key.classList.add(countInName > 0 ? "correct" : "highlight");
+        }
+      });
+    }
+
+    // Update on manual typing too
+    input.addEventListener("input", updateHighlights);
+  </script>
+
+</body>
+</html>
